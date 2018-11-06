@@ -80,4 +80,8 @@ class AdminService
         }
     }
 
+    public function getById($id){
+        return $this->admin->find($id);
+    }
+
 }

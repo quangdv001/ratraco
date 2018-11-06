@@ -24,6 +24,9 @@ class AdminAccountController extends AdminBaseController
 
     public function getCreate($id = 0){
         $data = [];
+        if($id > 0){
+            $data = $this->admin->getById($id);
+        }
         return view('admin.account.edit')->with('data', $data);
     }
 

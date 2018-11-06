@@ -16,7 +16,7 @@ class AdminAuthController extends Controller
         $credentials = $request->only('username', 'password');
         if (auth()->attempt($credentials)) {
             // Authentication passed...
-            return redirect()->intended('admin/dashboard');
+            return redirect()->intended('admin/');
         }
         return redirect()->back()->with('error','Tài khoản hoặc mật khẩu sai!');
     }
