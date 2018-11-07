@@ -13,8 +13,8 @@ class AdminTableSeeder extends Seeder
     {
         DB::table('admin')->insert([
             'username' => 'admin',
-            'roles' => 'admin',
-            'active' => true,
+            'permissions' => 'super_admin',
+//            'active' => true,
             'password' => bcrypt('12qw12qw'),
         ]);
     }

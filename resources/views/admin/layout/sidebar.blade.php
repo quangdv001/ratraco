@@ -42,55 +42,23 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="pages/forms/basic_elements.html">
-                <i class="menu-icon mdi mdi-backup-restore"></i>
-                <span class="menu-title">Form elements</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="pages/charts/chartjs.html">
-                <i class="menu-icon mdi mdi-chart-line"></i>
-                <span class="menu-title">Charts</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="pages/tables/basic-table.html">
-                <i class="menu-icon mdi mdi-table"></i>
-                <span class="menu-title">Tables</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="pages/icons/font-awesome.html">
-                <i class="menu-icon mdi mdi-sticker"></i>
-                <span class="menu-title">Icons</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-                <i class="menu-icon mdi mdi-restart"></i>
-                <span class="menu-title">User Pages</span>
+        <li class="nav-item @if(in_array($currentRoute,['admin.permission.getList', 'admin.permission.getCreate'])) active @endif">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic">
+                <i class="menu-icon mdi mdi-alert"></i>
+                <span class="menu-title">Quản lý nhóm quyền</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="auth">
+            <div class="collapse @if(in_array($currentRoute,['admin.permission.getList', 'admin.permission.getCreate'])) show @endif" id="ui-basic2">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a>
+                        <a class="nav-link @if(in_array($currentRoute,['admin.permission.getList'])) active @endif" href="{{ route('admin.permission.getList') }}">Danh sách nhóm quyền</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/samples/login.html"> Login </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/samples/register.html"> Register </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/samples/error-404.html"> 404 </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages/samples/error-500.html"> 500 </a>
+                        <a class="nav-link @if(in_array($currentRoute,['admin.permission.getCreate'])) active @endif" href="{{ route('admin.permission.getCreate') }}">Tạo nhóm quyền mới</a>
                     </li>
                 </ul>
             </div>
         </li>
+
     </ul>
 </nav>

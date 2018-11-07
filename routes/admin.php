@@ -9,7 +9,11 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
     Route::get('test', 'AdminHomeController@test')->name('home.test');
 
     Route::get('account', 'AdminAccountController@index')->name('account.getList');
-    Route::get('account/getCreate', 'AdminAccountController@getCreate')->name('account.getCreate');
-    Route::post('account/getCreate', 'AdminAccountController@postCreate')->name('account.postCreate');
+    Route::get('account/getCreate/{id?}', 'AdminAccountController@getCreate')->name('account.getCreate');
+    Route::post('account/getCreate/{id?}', 'AdminAccountController@postCreate')->name('account.postCreate');
+
+    Route::get('permission', 'AdminPermissionController@index')->name('permission.getList');
+    Route::get('permission/getCreate/{id?}', 'AdminPermissionController@getCreate')->name('permission.getCreate');
+    Route::post('permission/getCreate/{id?}', 'AdminPermissionController@postCreate')->name('permission.postCreate');
 });
 

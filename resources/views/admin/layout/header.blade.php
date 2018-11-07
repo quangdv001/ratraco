@@ -23,6 +23,7 @@
                     {{--<i class="mdi mdi-bookmark-plus-outline"></i>Score</a>--}}
             {{--</li>--}}
         {{--</ul>--}}
+        <h5 class="text-white text-uppercase">@yield('title','Dashboard')</h5>
         <ul class="navbar-nav navbar-nav-right">
 
             <li class="nav-item dropdown d-none d-xl-inline-block">

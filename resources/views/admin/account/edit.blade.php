@@ -1,98 +1,103 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('admin.layout.main')
+@section('title')
+    {{ $id > 0 ? 'Cập nhật tài khoản' : 'Tạo tài khoản' }}
+@endsection
+@section('content')
+    <form class="forms-sample" action="" method="post">
+        @csrf
+        <div class="row">
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Thông tin cơ bản</h4>
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                        <div class="form-group">
+                            <label>Tài khoản</label>
+                            <input type="text" class="form-control" @if($id == 0) name="username" @else readonly @endif placeholder="Tài khoản" value="{{ isset($data->username) ? $data->username : old('username') }}">
+                            @if($errors->has('username'))
+                                <p class="text-danger">{{ $errors->first('username') }}</p>
+                            @endif
+                        </div>
+                        @if($id == 0)
+                        <div class="form-group">
+                            <label for="">Mật khẩu</label>
+                            <input type="password" class="form-control" name="password"
+                                   placeholder="*********" value="{{ old('password') }}">
+                            @if($errors->has('password'))
+                                <p class="text-danger">{{ $errors->first('password') }}</p>
+                            @endif
+                        </div>
                         @endif
-                    @endauth
-                </div>
-            @endif
+                        <div class="form-group">
+                            <label>Họ tên</label>
+                            <input type="text" class="form-control" name="name" placeholder="Họ tên" value="{{ isset($data->name) ? $data->name : old('name') }}">
+                            @if($errors->has('name'))
+                                <p class="text-danger">{{ $errors->first('name') }}</p>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ isset($data->email) ? $data->email : old('email') }}">
+                            @if($errors->has('email'))
+                                <p class="text-danger">{{ $errors->first('email') }}</p>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <input type="text" class="form-control" name="phone" placeholder="Số điện thoại" value="{{ isset($data->phone) ? $data->phone : old('phone') }}">
+                            @if($errors->has('phone'))
+                                <p class="text-danger">{{ $errors->first('phone') }}</p>
+                            @endif
+                        </div>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect2">Hoạt động</label>
+                            <select class="form-control" id="exampleFormControlSelect2">
+                                <option value="1">Hoạt động</option>
+                                <option value="0">Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success mr-2 has-spinner">{{ $id > 0 ? 'Cập nhật' : 'Tạo mới' }}</button>
+                        <a href="{{ route('admin.account.getList') }}" class="btn btn-light">Hủy</a>
+                    </div>
                 </div>
+            </div>
+            <div class="col-md-8 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Phân quyền</h4>
+                        @if($group)
+                            <div class="row">
+                                @foreach($group as $v)
+                                    <div class="col-md-3">
+                                        <p class="text-uppercase">{{ $v->name }}</p>
+                                        @if($v->permission)
+                                            <div class="form-group">
+                                                @foreach($v->permission as $val)
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input type="checkbox" name="permission[]" value="{{ $val->code }}" class="form-check-input"
+                                                            @if(isset($data->permissions) && str_contains($data->permissions, $val->code)) checked @endif> {{ $val->name }}
+                                                        </label>
+                                                    </div>
+                                                @endforeach
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+    </form>
+@endsection
+@section('custom_js')
+    <script>
+        $(document).ready(function(){
+            //
+        })
+    </script>
+@endsection

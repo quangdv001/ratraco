@@ -20,8 +20,8 @@ class CreateAdminTable extends Migration
             $table->string('name', 100)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('phone', 20)->nullable();
-            $table->text('roles')->nullable();
-            $table->boolean('active');
+            $table->text('permissions')->nullable();
+            $table->boolean('active')->default(1);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

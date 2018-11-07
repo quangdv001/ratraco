@@ -84,4 +84,8 @@ class AdminService
         return $this->admin->find($id);
     }
 
+    public function getAll(){
+        return $this->admin->orderBy('id', 'DESC')->get();
+    }
+
 }

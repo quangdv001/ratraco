@@ -35,9 +35,9 @@
                                 </div>
                             @endif
                             <div class="form-group">
-                                <label class="label">Username</label>
+                                <label class="label">Tài khoản</label>
                                 <div class="input-group">
-                                    <input type="text" name="username" required class="form-control" placeholder="Username">
+                                    <input type="text" name="username" required class="form-control" placeholder="Tài khoản">
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="mdi mdi-check-circle-outline"></i>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="label">Password</label>
+                                <label class="label">Mật khẩu</label>
                                 <div class="input-group">
                                     <input type="password" name="password" required class="form-control" placeholder="*********">
                                     <div class="input-group-append">
@@ -57,15 +57,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary submit-btn btn-block">Login</button>
+                                <button class="btn btn-primary submit-btn btn-block">Đăng nhập</button>
                             </div>
                             <div class="form-group d-flex justify-content-between">
                                 <div class="form-check form-check-flat mt-0">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input" checked> Keep me signed in
+                                        <input type="checkbox" class="form-check-input" checked> Giữ tôi đăng nhập
                                     </label>
                                 </div>
-                                <a href="#" class="text-small forgot-password text-black">Forgot Password</a>
+                                <a href="#" class="text-small forgot-password text-black">Quên mật khẩu</a>
                             </div>
                             {{--<div class="form-group">--}}
                             {{--<button class="btn btn-block g-login">--}}
