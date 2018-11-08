@@ -15,6 +15,12 @@ $(document).ready(function () {
     //     }, 3000);
     // });
 
+    //preloader
+    setTimeout(function(){
+        $('#loader-wrapper, #loader').hide();
+        $('.container-scroller').show();
+    }, 1000);
+
     $('.forms-sample').submit(function(){
         $('.has-spinner').buttonLoader('start');
     });

@@ -12,6 +12,9 @@
 </head>
 
 <body>
+<div id="loader-wrapper">
+    <div id="loader"></div>
+</div>
 <div class="container-scroller">
     @include('admin.layout.header')
     <div class="container-fluid page-body-wrapper">
