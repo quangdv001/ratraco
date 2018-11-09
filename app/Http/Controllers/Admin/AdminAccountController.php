@@ -21,8 +21,7 @@ class AdminAccountController extends AdminBaseController
 
     public function index(Request $request){
         $params = $request->only('username', 'email', 'phone', 'name', 'active');
-        $data = $this->admin->search($params);
-        debug($data);
+        $data = $this->admin->getAll($params);
         return view('admin.account.index')
             ->with('data', $data);
     }

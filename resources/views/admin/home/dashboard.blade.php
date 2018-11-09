@@ -575,3 +575,5 @@
 @section('lib_js')
     <script src="{{ asset('assets/admin/themes/js/dashboard.js') }}"></script>
 @endsection
+@section('custom_js')
+@endsection

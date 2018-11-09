@@ -1,13 +1,13 @@
 @extends('admin.layout.main')
 @section('title')
-    Danh sách tài khoản
+    Danh sách nhóm quyền
 @endsection
 @section('content')
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Danh sách tài khoản</h4>
+                    <h4 class="card-title">Danh sách nhóm quyền</h4>
                     {{--<p class="card-description">--}}
                         {{--Add class--}}
                         {{--<code>.table-bordered</code>--}}
@@ -21,19 +21,10 @@
                                         Id
                                     </th>
                                     <th>
-                                        Tài khoản
+                                        Tên nhóm quyền
                                     </th>
                                     <th>
-                                        Họ tên
-                                    </th>
-                                    <th>
-                                        Email
-                                    </th>
-                                    <th>
-                                        SĐT
-                                    </th>
-                                    <th>
-                                        Trạng thái
+                                        Nhóm quyền
                                     </th>
                                     <th>
                                         Hành động
@@ -47,26 +38,17 @@
                                             {{ $v->id }}
                                         </td>
                                         <td>
-                                            {{ $v->username }}
-                                        </td>
-                                        <td>
                                             {{ $v->name }}
                                         </td>
                                         <td>
-                                            {{ $v->email }}
-                                        </td>
-                                        <td>
-                                            {{ $v->phone }}
-                                        </td>
-                                        <td class="text-center">
-                                            @if($v->active == 1)
-                                                <span class="text-success"><i class="fa fa-user-plus icon-sm" aria-hidden="true"></i></span>
-                                            @else
-                                                <span class="text-danger"><i class="fa fa-user-times icon-sm" aria-hidden="true"></i></span>
+                                            @if(sizeof($v->permission) > 0)
+                                                @foreach($v->permission as $val)
+                                                    <p>- {{ $val->name }} <span class="text-danger">({{ $val->code }})</span></p>
+                                                @endforeach
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.account.getCreate', ['id' => $v->id]) }}" class="text-warning"><i class="fa fa-pencil-square-o icon-sm" aria-hidden="true"></i></a>
+                                            <a href="{{ route('admin.permission.getCreate', ['id' => $v->id]) }}" class="text-warning"><i class="fa fa-pencil-square-o icon-sm" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

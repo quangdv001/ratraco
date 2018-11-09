@@ -40,7 +40,7 @@
                                     <input type="text" name="username" required class="form-control" placeholder="Tài khoản">
                                     <div class="input-group-append">
                                         <span class="input-group-text">
-                                            <i class="mdi mdi-check-circle-outline"></i>
+                                            <i class="mdi mdi-account-circle"></i>
                                         </span>
                                     </div>
                                 </div>

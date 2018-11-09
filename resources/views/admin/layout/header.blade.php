@@ -23,7 +23,7 @@
                     {{--<i class="mdi mdi-bookmark-plus-outline"></i>Score</a>--}}
             {{--</li>--}}
         {{--</ul>--}}
-        <h5 class="text-white text-uppercase">@yield('title','Dashboard')</h5>
+        <h5 class="text-white"><i class="mdi mdi-format-align-justify"></i> @yield('title','')</h5>
         <ul class="navbar-nav navbar-nav-right">
 
             <li class="nav-item dropdown d-none d-xl-inline-block">
@@ -46,16 +46,16 @@
                         </div>
                     </a>
                     <a href="#" class="dropdown-item mt-2">
-                        Manage Accounts
+                        Quản lý tài khoản
                     </a>
                     <a href="#" class="dropdown-item">
-                        Change Password
+                        Đổi mật khẩu
                     </a>
                     {{--<a class="dropdown-item">--}}
                         {{--Check Inbox--}}
                     {{--</a>--}}
                     <a href="{{ route('admin.logout') }}" class="dropdown-item">
-                        Sign Out
+                        Đăng xuất
                     </a>
                 </div>
             </li>

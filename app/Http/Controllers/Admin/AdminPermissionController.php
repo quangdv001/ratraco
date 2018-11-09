@@ -20,9 +20,7 @@ class AdminPermissionController extends AdminBaseController
     }
 
     public function index(Request $request){
-        $params = $request->only('username', 'email', 'phone', 'name', 'active');
-        $data = $this->admin->search($params);
-        debug($data);
+        $data = $this->permission->getAll();
         return view('admin.permission.index')
             ->with('data', $data);
     }
@@ -30,13 +28,10 @@ class AdminPermissionController extends AdminBaseController
     public function getCreate($id = 0){
         $data = [];
         if($id > 0){
-            $data = $this->admin->getById($id);
+            $data = $this->permission->getGroupById($id);
         }
-        $group = $this->permission->getAll();
-        debug($group, $data);
-        return view('admin.account.edit')
+        return view('admin.permission.edit')
             ->with('id', $id)
-            ->with('group', $group)
             ->with('data', $data);
     }
 
@@ -62,6 +57,44 @@ class AdminPermissionController extends AdminBaseController
             }
         }
         return redirect()->route('admin.account.getList')->with('success_message', $mess);
+    }
+
+    public function editPermission(Request $request){
+        $id = (int)$request->input('id',0);
+        $data = $request->only('name', 'code', 'group_id');
+        $response['success'] = 0;
+        $response['msg'] = 'Lỗi hệ thống';
+        $res = array();
+        if($id == 0){
+            $res = $this->permission->createPermission($data);
+
+        } else {
+            $res = $this->permission->updatePermission($id, $data);
+        }
+        if($res){
+
+            $permission = $this->permission->getPermissionByGroupId($res->group_id);
+            $response['success'] = 1;
+            $response['msg'] = $id == 0 ? 'Tạo quyền thành công' : 'Sửa quyền thành công';
+            $response['html'] = view('admin.permission.listPermission')->with('data', $permission)->render();
+        }
+        return response()->json($response);
+    }
+
+    public function removePermission(Request $request){
+        $id = (int)$request->input('id',0);
+        $groupId = (int)$request->input('group_id', 0);
+        $response['success'] = 0;
+        $response['msg'] = 'Lỗi hệ thống';
+        $res = array();
+        $res = $this->permission->removePermission($id);
+        if($res){
+            $permission = $this->permission->getPermissionByGroupId($groupId);
+            $response['success'] = 1;
+            $response['msg'] = 'Xóa quyền thành công';
+            $response['html'] = view('admin.permission.listPermission')->with('data', $permission)->render();
+        }
+        return response()->json($response);
     }
 
 }

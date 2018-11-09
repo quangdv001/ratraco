@@ -54,7 +54,7 @@
                             <label for="exampleFormControlSelect2">Hoạt động</label>
                             <select class="form-control" id="exampleFormControlSelect2">
                                 <option value="1">Hoạt động</option>
-                                <option value="0">Ngừng hoạt động</option>
+                                <option value="0" @if(isset($data->active) && $data->active == 0) selected @endif>Ngừng hoạt động</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-success mr-2 has-spinner">{{ $id > 0 ? 'Cập nhật' : 'Tạo mới' }}</button>

@@ -124,3 +124,8 @@ span.noty-text i{
     from{ bottom:-100px; opacity:0 }
     to{ bottom:0; opacity:1 }
 }
+
+/*navbar color*/
+.navbar.default-layout{
+    background: linear-gradient(120deg, #e65251, #5983e8);
+}
