@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Admin\AccountRequest;
+use App\Http\Requests\Admin\PermissionRequest;
 use App\Services\AdminService;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 
 class AdminPermissionController extends AdminBaseController
 {
@@ -20,12 +21,18 @@ class AdminPermissionController extends AdminBaseController
     }
 
     public function index(Request $request){
+        if (Gate::denies('admin-pms', $this->currentRoute)) {
+            return redirect()->route('admin.home.dashboard')->with('error_message','Bạn không có quyền vào trang này!');
+        }
         $data = $this->permission->getAll();
         return view('admin.permission.index')
             ->with('data', $data);
     }
 
     public function getCreate($id = 0){
+        if (Gate::denies('admin-pms', $this->currentRoute)) {
+            return redirect()->route('admin.home.dashboard')->with('error_message','Bạn không có quyền vào trang này!');
+        }
         $data = [];
         if($id > 0){
             $data = $this->permission->getGroupById($id);
@@ -35,28 +42,24 @@ class AdminPermissionController extends AdminBaseController
             ->with('data', $data);
     }
 
-    public function postCreate(AccountRequest $request, $id = 0){
-        $data = $request->only('username', 'email', 'phone', 'name', 'active');
+    public function postCreate(PermissionRequest $request, $id = 0){
+        if (Gate::denies('admin-pms', $this->currentRoute)) {
+            return redirect()->route('admin.home.dashboard')->with('error_message','Bạn không có quyền vào trang này!');
+        }
+        $data = $request->all();
         $mess = '';
-        if($request->filled('password')){
-            $data['password'] = bcrypt($request->filled('password'));
-        }
-        if($request->has('permission')){
-            $data['permissions'] = implode(',',$request->input('permission'));
-        }
         if($id == 0){
-            $res = $this->admin->create($data);
+            $res = $this->permission->create($data);
             if($res){
-                $mess = 'Tạo tài khoản thành công';
+                $mess = 'Tạo nhóm quyền thành công';
             }
         } else {
-            $admin = $this->admin->getById($id);
-            $res = $this->admin->update($admin, $data);
+            $res = $this->permission->update($id, $data);
             if($res){
-                $mess = 'Cập nhật tài khoản thành công';
+                $mess = 'Cập nhật nhóm quyền thành công';
             }
         }
-        return redirect()->route('admin.account.getList')->with('success_message', $mess);
+        return redirect()->route('admin.permission.getList')->with('success_message', $mess);
     }
 
     public function editPermission(Request $request){
@@ -72,7 +75,6 @@ class AdminPermissionController extends AdminBaseController
             $res = $this->permission->updatePermission($id, $data);
         }
         if($res){
-
             $permission = $this->permission->getPermissionByGroupId($res->group_id);
             $response['success'] = 1;
             $response['msg'] = $id == 0 ? 'Tạo quyền thành công' : 'Sửa quyền thành công';
@@ -95,6 +97,16 @@ class AdminPermissionController extends AdminBaseController
             $response['html'] = view('admin.permission.listPermission')->with('data', $permission)->render();
         }
         return response()->json($response);
+    }
+
+    public function removeGroup(Request $request){
+        $id = (int)$request->input('id',0);
+        $res = $this->permission->removeGroup($id);
+        $msg = '';
+        if($res){
+            $msg = 'Xóa nhóm quyền thành công';
+        }
+        return redirect()->route('admin.permission.getList')->with('success_message', $msg);
     }
 
 }

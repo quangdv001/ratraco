@@ -12,9 +12,9 @@
                         {{--Add class--}}
                         {{--<code>.table-bordered</code>--}}
                     {{--</p>--}}
-                    <div class="table-responsive">
+                    <div class="table-responsive ">
                         @if($data)
-                            <table class="table table-bordered myTable">
+                            <table class="table table-bordered myTable permission-content">
                                 <thead>
                                 <tr>
                                     <th>
@@ -31,7 +31,8 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="">
+
                                 @foreach($data as $v)
                                     <tr>
                                         <td>
@@ -48,17 +49,19 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.permission.getCreate', ['id' => $v->id]) }}" class="text-warning"><i class="fa fa-pencil-square-o icon-sm" aria-hidden="true"></i></a>
+                                            <a href="{{ route('admin.permission.getCreate', ['id' => $v->id]) }}" class="text-warning mr-4"><i class="fa fa-pencil-square-o icon-sm" aria-hidden="true"></i></a>
+                                            <a href="{{ route('admin.permission.removeGroup', ['id' => $v->id]) }}" class="text-danger rm_group_btn"><i class="fa fa-trash icon-sm" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
+
                                 </tbody>
                             </table>
                         @endif
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+

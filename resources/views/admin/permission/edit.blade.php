@@ -13,7 +13,7 @@
 
                         <div class="form-group">
                             <label>Tên nhóm quyền</label>
-                            <input type="text" class="form-control" name="name" placeholder="Tài khoản"
+                            <input type="text" class="form-control" name="name" placeholder="Tài khoản" required
                                    value="{{ isset($data->name) ? $data->name : old('name') }}">
                             @if($errors->has('name'))
                                 <p class="text-danger">{{ $errors->first('name') }}</p>
@@ -77,22 +77,19 @@
                                     @endif
                                     </tbody>
                                 </table>
-
-
                             </div>
-
                             <div class="row mt-5">
                                 <div class="col-md-4 ">
                                     <div class="form-group">
                                         <label>Tên quyền</label>
-                                        <input type="text" required class="form-control permission_name"
+                                        <input type="text" class="form-control permission_name"
                                                placeholder="Tên quyền"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4 ">
                                     <div class="form-group">
                                         <label>Mã quyền</label>
-                                        <input type="text" required class="form-control permission_code"
+                                        <input type="text" class="form-control permission_code"
                                                placeholder="Mã quyền"/>
                                     </div>
                                 </div>
@@ -112,7 +109,7 @@
                     </div>
                 </div>
             @else
-                <div class="col-md-8 grid-margin stretch-card">
+                <div class="col-md-8 grid-margin stretch-card bl-edit-permission">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Nhóm quyền</h4>
@@ -120,9 +117,6 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>
-                                            Id
-                                        </th>
                                         <th>
                                             Tên quyền
                                         </th>
@@ -139,20 +133,16 @@
                                         @foreach($data->permission as $v)
                                             <tr>
                                                 <td>
-                                                    {{ $v->id }}
+
+                                                    <input type="hidden" name="pms[][name]">
                                                 </td>
                                                 <td>
-                                                    {{ $v->name }}
+
+                                                    <input type="hidden" name="pms[][code]">
                                                 </td>
                                                 <td>
-                                                    {{ $v->code }}
-                                                </td>
-                                                <td>
-                                                    <a href="javascript:void(0)"
-                                                       class="text-warning edit_permission_btn"
-                                                       data-id="{{ $v->id }}" data-name="{{ $v->name }}"
-                                                       data-code="{{ $v->code }}">
-                                                        <i class="fa fa-pencil-square-o icon-sm" aria-hidden="true"></i>
+                                                    <a href="javascript:void(0)" class="text-danger rm_pms_btn">
+                                                        <i class="fa fa-trash icon-sm" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -161,19 +151,18 @@
                                     </tbody>
                                 </table>
                             </div>
-
                             <div class="row mt-5">
                                 <div class="col-md-4 ">
                                     <div class="form-group">
                                         <label>Tên quyền</label>
-                                        <input type="text" required class="form-control permission_name"
+                                        <input type="text" class="form-control permission_name"
                                                placeholder="Tên quyền"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4 ">
                                     <div class="form-group">
                                         <label>Mã quyền</label>
-                                        <input type="text" required class="form-control permission_code"
+                                        <input type="text" class="form-control permission_code"
                                                placeholder="Mã quyền"/>
                                     </div>
                                 </div>
@@ -181,8 +170,8 @@
                                     <div class="form-group">
                                         {{--<label>abc</label>--}}
                                         <input type="hidden" class="permission_id" value="0">
-                                        <input type="hidden" class="group_id" value="{{ $id }}}">
-                                        <button class="btn btn-info btn-fw mr-2 mt-4 has-spinner permission_btn">Lưu
+                                        <input type="hidden" class="group_id" value="{{ $id }}">
+                                        <button class="btn btn-info btn-fw mr-2 mt-4 has-spinner @if($id > 0) permission_btn @else pms_btn_create @endif">Lưu
                                         </button>
                                         <button class="btn btn-warning btn-fw mt-4 has-spinner permission_cancel">Hủy
                                         </button>
@@ -206,13 +195,19 @@
                 var permission_code = $('.permission_code').val();
                 var group_id = $('.group_id').val();
 
+                if(permission_name == '' || permission_code == ''){
+                    init.notyPopup('Tên quyền + Mã quyền không được rỗng!', 'error');
+                    return false;
+                }
+
                 var url = BASE_URL + '/admin/permission/editPermission';
                 var data = {id: permission_id, name: permission_name, code: permission_code, group_id: group_id};
                 $('.bl-edit-permission').preloader();
                 $.post(url, data, function (res) {
                     if (res.success == 1) {
                         $('.permission-content').html(res.html);
-                        $('.permission_name, .permission_code').val();
+                        $('.permission_name, .permission_code').val('');
+                        $('.permission_id').val(0);
                         init.notyPopup(res.msg, 'success');
                     } else {
                         init.notyPopup(res.msg, 'error');
@@ -255,6 +250,41 @@
                 $('.permission_name').val('');
                 $('.permission_code').val('');
             })
+
+            $('.pms_btn_create').click(function(e){
+                e.preventDefault();
+                var name = $('.permission_name').val();
+                var code = $('.permission_code').val();
+
+                if(name == '' || code == ''){
+                    init.notyPopup('Tên quyền + Mã quyền không được rỗng!', 'error');
+                    return false;
+                }
+
+                var key = Math.random();
+                var html = '<tr>\n' +
+                    '                                                <td>\n' +
+                    '                                                    \n' + name +
+                    '                                                    <input type="hidden" name="pms['+ key +'][name]" value="'+ name +'">\n' +
+                    '                                                </td>\n' +
+                    '                                                <td>\n' +
+                    '                                                    \n' + code +
+                    '                                                    <input type="hidden" name="pms['+ key +'][code]" value="'+ code +'">\n' +
+                    '                                                </td>\n' +
+                    '                                                <td>\n' +
+                    '                                                    <a href="javascript:void(0)" class="text-danger rm_pms_btn">\n' +
+                    '                                                        <i class="fa fa-trash icon-sm" aria-hidden="true"></i>\n' +
+                    '                                                    </a>\n' +
+                    '                                                </td>\n' +
+                    '                                            </tr>';
+                $('.permission-content').append(html);
+                $('.permission_name, .permission_code').val('');
+            });
+
+            $(document).on('click','.rm_pms_btn', function(){
+               $(this).parent().parent().remove();
+            });
+
         })
     </script>
 @endsection

@@ -91,4 +91,55 @@ class PermissionService
         return $this->permission->where('group_id', $id)->get();
     }
 
+    public function create($data)
+    {
+        try {
+            DB::beginTransaction();
+            $group = $this->group;
+            $group->name = $data['name'];
+            $group->save();
+
+            $groupId = $group->id;
+            if(isset($data['pms']) && sizeof($data['pms']) > 0){
+                foreach($data['pms'] as $k => $v){
+                    $data['pms'][$k]['group_id'] = $groupId;
+                }
+                $this->permission->insert(array_values($data['pms']));
+            }
+            DB::commit();
+            return $group;
+        } catch (Exception  $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function update($id, $data)
+    {
+        try {
+            DB::beginTransaction();
+            $group = $this->group->find($id);
+            $group->name = $data['name'];
+            $group->save();
+            DB::commit();
+            return $group;
+        } catch (Exception  $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function removeGroup($id)
+    {
+        try {
+            DB::beginTransaction();
+            $permission = $this->group->find($id)->delete();
+            DB::commit();
+            return true;
+        } catch (Exception  $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
 }

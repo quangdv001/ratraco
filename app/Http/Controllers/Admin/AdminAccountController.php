@@ -7,6 +7,7 @@ use App\Services\AdminService;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 
 class AdminAccountController extends AdminBaseController
 {
@@ -20,6 +21,9 @@ class AdminAccountController extends AdminBaseController
     }
 
     public function index(Request $request){
+        if (Gate::denies('admin-pms', $this->currentRoute)) {
+            return redirect()->route('admin.home.dashboard')->with('error_message','Bạn không có quyền vào trang này!');
+        }
         $params = $request->only('username', 'email', 'phone', 'name', 'active');
         $data = $this->admin->getAll($params);
         return view('admin.account.index')
@@ -27,6 +31,9 @@ class AdminAccountController extends AdminBaseController
     }
 
     public function getCreate($id = 0){
+        if (Gate::denies('admin-pms', $this->currentRoute)) {
+            return redirect()->route('admin.home.dashboard')->with('error_message','Bạn không có quyền vào trang này!');
+        }
         $data = [];
         if($id > 0){
             $data = $this->admin->getById($id);
@@ -40,10 +47,13 @@ class AdminAccountController extends AdminBaseController
     }
 
     public function postCreate(AccountRequest $request, $id = 0){
+        if (Gate::denies('admin-pms', $this->currentRoute)) {
+            return redirect()->route('admin.home.dashboard')->with('error_message','Bạn không có quyền vào trang này!');
+        }
         $data = $request->only('username', 'email', 'phone', 'name', 'active');
         $mess = '';
         if($request->filled('password')){
-            $data['password'] = bcrypt($request->filled('password'));
+            $data['password'] = bcrypt($request->input('password'));
         }
         if($request->has('permission')){
             $data['permissions'] = implode(',',$request->input('permission'));

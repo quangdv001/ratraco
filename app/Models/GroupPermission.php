@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GroupPermission extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
     protected $table = 'group_permission';
     protected $fillable = [
         'name'

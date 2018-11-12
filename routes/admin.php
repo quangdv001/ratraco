@@ -17,5 +17,6 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
     Route::post('permission/getCreate/{id?}', 'AdminPermissionController@postCreate')->name('permission.postCreate');
     Route::post('permission/editPermission', 'AdminPermissionController@editPermission')->name('permission.editPermission');
     Route::post('permission/removePermission', 'AdminPermissionController@removePermission')->name('permission.removePermission');
+    Route::get('permission/removeGroup', 'AdminPermissionController@removeGroup')->name('permission.removeGroup');
 });
 
